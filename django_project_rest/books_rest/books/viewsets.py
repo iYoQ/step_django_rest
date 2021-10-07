@@ -1,10 +1,13 @@
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
+from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .serializers import *
 
 
 class AuthorsViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
     queryset = Authors.objects.all()
     serializer_class = AuthorsSerializer
     filter_backends = (filters.DjangoFilterBackend,)
