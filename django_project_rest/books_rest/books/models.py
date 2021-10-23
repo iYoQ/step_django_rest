@@ -10,6 +10,12 @@ class BooksManager(models.Manager):
         return self.create(name=name.capitalize(), write_date=write_date, description=description, pages=pages, image=image, author_relative=author_relative, publishing_relative=publishing_relative)
 
 
+
+class ShopManager(models.Manager):
+    def update_shop(self, name, address, phone, assortiment):
+        return self.update(name=name, address=address, phone=phone, assortiment=assortiment)
+
+
 class Authors(models.Model):
     name = models.CharField(max_length=250)
     surename = models.CharField(max_length=250)
@@ -75,9 +81,11 @@ class Review(models.Model):
 
 class Shop(models.Model):
     name = models.CharField(max_length=250, verbose_name='Name of shop')
-    adress = models.CharField(max_length=1000)
+    address = models.CharField(max_length=1000)
     phone = models.CharField(max_length=16)
     assortiment = models.ManyToManyField(Books, related_name='Assortiment_of_books', null=True, blank=True)
+
+    objects = ShopManager()
 
     def __str__(self):
         return f'{self.name}'

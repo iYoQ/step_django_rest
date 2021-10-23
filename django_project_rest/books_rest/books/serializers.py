@@ -36,6 +36,8 @@ class PublishingsSerializer(serializers.ModelSerializer):
 
 
 class ShopSerializer(serializers.ModelSerializer):
+    def update(self, validated_data):
+        return Shop.objects.update(name=validated_data['name'], address=validated_data['address'].lower(), phone=validated_data['phone'], assortiment=validated_data['assortiment'])
 
     assortiment = BooksSerializer(read_only=True, many=True)
 
