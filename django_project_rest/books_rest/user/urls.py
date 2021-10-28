@@ -3,6 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from .viewsets import *
 
 
 urlpatterns = [

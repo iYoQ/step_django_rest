@@ -20,3 +20,10 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
+app.conf.beat_schedule = {
+    'send_email': {
+        'task': 'user.service.send_email',
+        'schedule': 30, 
+    }
+}
