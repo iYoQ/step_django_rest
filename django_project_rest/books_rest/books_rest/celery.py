@@ -24,6 +24,6 @@ def debug_task(self):
 app.conf.beat_schedule = {
     'send_email': {
         'task': 'user.service.send_email',
-        'schedule': 30, 
+        'schedule': 30000000000, 
     }
 }

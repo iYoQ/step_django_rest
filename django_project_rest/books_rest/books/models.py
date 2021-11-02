@@ -1,4 +1,7 @@
 from django.db import models
+from datetime import datetime
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete, pre_save
 
 class AuthorsManager(models.Manager):
     def create_author(self, name, surename, fathername, city, birthday):
@@ -94,3 +97,42 @@ class Shop(models.Model):
         verbose_name = 'Shop'
         verbose_name_plural = 'Shops'
         ordering = ['name']
+
+
+class StatData(models.Model):
+    save_books = models.IntegerField(verbose_name='Count of books')
+    save_date = models.DateField(auto_now_add=True, verbose_name='Date save of stats')
+    save_books_name = models.CharField(max_length=1500, verbose_name='List of books for day', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.save_date}'
+
+
+    class Meta:
+        verbose_name = 'Statistic for day'
+        verbose_name_plural = 'Statistic for day'
+
+
+@receiver(pre_save, sender=Books)
+def save_book(sender, **kwargs):
+    date_now = datetime.now().date()
+    queryset = StatData.objects.filter(save_date=date_now)
+
+    if queryset.exists():
+        for item in queryset:
+            item.save_books += 1
+            item.save()
+    else:
+        StatData.objects.create(save_books=1, save_date=date_now)
+
+@receiver(pre_delete, sender=Books)
+def delete_book(sender, **kwargs):
+    date_now = datetime.now().date()
+    queryset = StatData.objects.filter(save_date=date_now)
+
+    if queryset.exists():
+        for item in queryset:
+            item.save_books -= 1
+            item.save()
+    else:
+        StatData.objects.create(save_books=-1, save_date=date_now)
