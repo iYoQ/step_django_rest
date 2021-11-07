@@ -25,5 +25,9 @@ app.conf.beat_schedule = {
     'send_email': {
         'task': 'user.service.send_email',
         'schedule': 30000000000, 
-    }
+    },
+    'save_date': {
+        'task': 'user.service.save_date',
+        'schedule': 86400,
+    },
 }
