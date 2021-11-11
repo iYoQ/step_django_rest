@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         if password.length() < 8:
             raise ValueError('password length too short')
         user.set_password(password)
-        send_email.delay()
+        # send_email.delay()
         user.save()
         return user
 

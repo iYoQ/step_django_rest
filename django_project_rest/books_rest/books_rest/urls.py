@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from .router import router
 from django.conf.urls import url
 from rest_framework_swagger.views import get_swagger_view
+from user.views import UserAction
 
 
 schema_view = get_swagger_view(title='Books API')
@@ -30,6 +31,7 @@ urlpatterns = [
     path('books/', include('books.urls')),
     path('user/', include('user.urls')),
     path('api-auth/', include(router.urls)),
+    path('me/', UserAction.as_view(), name='me')
 ]
 
 if settings.DEBUG:
